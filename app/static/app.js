@@ -1,7 +1,14 @@
 (() => {
   "use strict";
 
-  const state = { todos: [], filter: "all", loading: true, creating: false, pending: new Set() };
+  const state = {
+    todos: [],
+    filter: "all",
+    loading: true,
+    loadError: false,
+    creating: false,
+    pending: new Set(),
+  };
   const form = document.querySelector("#todo-form");
   const input = document.querySelector("#todo-title");
   const createButton = document.querySelector("#create-button");
@@ -89,8 +96,19 @@
     filterButtons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.filter === state.filter)));
 
     list.replaceChildren(...visibleTodos().map(renderTodo));
+    status.replaceChildren();
     if (state.loading) {
       status.textContent = "読み込み中...";
+      status.hidden = false;
+    } else if (state.loadError) {
+      const message = document.createElement("p");
+      message.textContent = "TODOを読み込めませんでした。";
+      const retry = document.createElement("button");
+      retry.className = "retry-button";
+      retry.type = "button";
+      retry.dataset.action = "retry";
+      retry.textContent = "再読み込み";
+      status.append(message, retry);
       status.hidden = false;
     } else if (state.todos.length === 0) {
       status.textContent = "TODOはまだありません。最初のひとつを追加しましょう。";
@@ -178,12 +196,21 @@
     }
   });
 
+  status.addEventListener("click", (event) => {
+    if (!event.target.closest('[data-action="retry"]')) return;
+    loadTodos();
+  });
+
   document.querySelector("#today").textContent = new Intl.DateTimeFormat("ja-JP", { month: "long", day: "numeric", weekday: "short" }).format(new Date());
 
   async function loadTodos() {
+    state.loading = true;
+    state.loadError = false;
+    render();
     try {
       state.todos = await request("/todos");
     } catch (requestError) {
+      state.loadError = true;
       showNotification(requestError.message, true);
     } finally {
       state.loading = false;

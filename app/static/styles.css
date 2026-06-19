@@ -85,6 +85,9 @@ h2 { margin: 0; font-size: 1.2rem; }
 .delete-button { min-width: 44px; min-height: 44px; border: 0; border-radius: 10px; color: var(--muted); background: transparent; font-size: 1.15rem; }
 .delete-button:hover:not(:disabled) { color: var(--danger); background: #fff0f2; }
 .status-card { padding: 48px 24px; color: var(--muted); text-align: center; }
+.status-card p { margin: 0 0 14px; }
+.retry-button { min-height: 44px; border: 1px solid var(--border); border-radius: 10px; padding: 0 18px; color: var(--accent); background: var(--surface); font-weight: 750; }
+.retry-button:hover { border-color: var(--accent); background: var(--surface-soft); }
 .status-card[hidden], .todo-list:empty { display: none; }
 
 .toast { position: fixed; right: 20px; bottom: 20px; max-width: min(390px, calc(100% - 40px)); padding: 13px 17px; border-radius: 12px; color: white; background: var(--text); box-shadow: var(--shadow); opacity: 0; transform: translateY(10px); pointer-events: none; transition: opacity 160ms ease, transform 160ms ease; }

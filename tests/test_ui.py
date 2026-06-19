@@ -13,6 +13,16 @@ def test_index_serves_ui(client: TestClient) -> None:
     assert '/static/app.js' in response.text
 
 
+def test_ui_includes_loading_and_accessible_notification_regions(
+    client: TestClient,
+) -> None:
+    response = client.get("/")
+
+    assert 'id="list-region" aria-busy="true"' in response.text
+    assert 'id="status"' in response.text
+    assert 'id="notification" role="status" aria-live="polite"' in response.text
+
+
 def test_static_assets_are_available(client: TestClient) -> None:
     css = client.get("/static/styles.css")
     javascript = client.get("/static/app.js")
@@ -21,6 +31,7 @@ def test_static_assets_are_available(client: TestClient) -> None:
     assert css.headers["content-type"].startswith("text/css")
     assert javascript.status_code == 200
     assert "javascript" in javascript.headers["content-type"]
+    assert 'dataset.action = "retry"' in javascript.text
     assert client.get("/static/missing.css").status_code == 404
 
 
