@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#171a2b">
+    <title>Focus List</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="/static/app.js" defer></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">YOUR DAY, IN FOCUS</p>
+          <h1>Focus List</h1>
+          <p class="subtitle">今日やることを、シンプルに整理しましょう。</p>
+        </div>
+        <div class="date-badge" id="today" aria-label="今日の日付"></div>
+      </header>
+
+      <section class="panel create-panel" aria-labelledby="create-heading">
+        <h2 id="create-heading" class="visually-hidden">TODOを追加</h2>
+        <form id="todo-form" novalidate>
+          <label for="todo-title">新しいTODO</label>
+          <div class="input-row">
+            <input id="todo-title" name="title" type="text" maxlength="200"
+              placeholder="例: 企画書の構成をまとめる" autocomplete="off"
+              aria-describedby="input-error">
+            <button class="primary-button" id="create-button" type="submit">
+              <span aria-hidden="true">＋</span> 追加
+            </button>
+          </div>
+          <p class="field-error" id="input-error" role="alert"></p>
+        </form>
+      </section>
+
+      <section class="workspace" aria-labelledby="list-heading">
+        <div class="list-header">
+          <div>
+            <h2 id="list-heading">TODO</h2>
+            <p class="summary" id="summary">0件 / 未完了 0件</p>
+          </div>
+          <div class="filters" role="group" aria-label="TODOの絞り込み">
+            <button type="button" data-filter="all" aria-pressed="true">すべて</button>
+            <button type="button" data-filter="active" aria-pressed="false">未完了</button>
+            <button type="button" data-filter="completed" aria-pressed="false">完了</button>
+          </div>
+        </div>
+
+        <div id="list-region" aria-busy="true">
+          <div class="status-card" id="status">読み込み中...</div>
+          <ul class="todo-list" id="todo-list" aria-label="TODO一覧"></ul>
+        </div>
+      </section>
+    </main>
+
+    <div class="toast" id="notification" role="status" aria-live="polite" aria-atomic="true"></div>
+    <noscript>この画面の操作にはJavaScriptを有効にする必要があります。</noscript>
+  </body>
+</html>
